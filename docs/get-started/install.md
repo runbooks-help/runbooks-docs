@@ -8,7 +8,7 @@ description: Run the container, mount your runbooks, and see your first page.
 
 ## Run the container
 
-The app ships as a container image and carries no content. You mount a directory of Markdown runbooks.
+The app ships as a container image and carries no content. You mount a directory of Markdown runbooks. The image is built from the public source at [github.com/runbooks-help/runbooks](https://github.com/runbooks-help/runbooks).
 
 ```bash [Start Runbooks]
 docker run -d --name runbooks \
@@ -55,11 +55,16 @@ Every setting is an environment variable; the full list is [Configuration](../re
 | `PUBLIC_URL` | _(unset)_ | Absolute site base; enables canonical/OpenGraph tags and `/sitemap.xml`. |
 | `IDENTITY_DB_DRIVER` | _(unset)_ | `sqlite`, `mysql` or `postgres`; unset leaves the app public. |
 
-## Build from source
+## Get the source
 
-The image is the supported distribution. The FSL permits building from source:
+Runbooks is public and source-available under FSL-1.1-MIT. The source lives at
+[github.com/runbooks-help/runbooks](https://github.com/runbooks-help/runbooks),
+and that repository is where the code, releases and issue tracker live. The image
+is the supported distribution; building from source is straightforward:
 
-```bash [Build and run]
+```bash [Clone, build and run]
+git clone https://github.com/runbooks-help/runbooks
+cd runbooks
 mise install
 mise run build
 ./runbooks            # serves on :8090, reads ./content

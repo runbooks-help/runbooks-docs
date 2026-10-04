@@ -109,3 +109,5 @@ There are no foreign keys, so the set is self-contained; restoring the database 
 docker inspect --format '{{index .Config.Labels "org.opencontainers.image.version"}}' \
   ghcr.io/runbooks-help/runbooks:<tag>
 ```
+
+Release notes, the source and the issue tracker are in the public repository at [github.com/runbooks-help/runbooks](https://github.com/runbooks-help/runbooks).

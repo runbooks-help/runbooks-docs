@@ -1,5 +1,5 @@
 # The docs tree's sidebar groups, in order. Position is the order; a directory
-# not listed is appended alphabetically. See specs/runbooks/docs-content.
+# not listed is appended alphabetically.
 - get-started:
     title: Get started
 - guides:

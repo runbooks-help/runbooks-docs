@@ -37,9 +37,10 @@ Solo operators, small teams and studios who keep their operational knowledge in 
 
 ## Licence
 
-Runbooks is **source-available** under FSL-1.1-MIT: free to self-host, modify and use commercially, with no competing-use right, and each release converts to MIT two years after publication.
+Runbooks is **source-available** under FSL-1.1-MIT: free to self-host, modify and use commercially, with no competing-use right, and each release converts to MIT two years after publication. The source is public at [github.com/runbooks-help/runbooks](https://github.com/runbooks-help/runbooks).
 
 ## Where next
 
 - [Install & quickstart](install.md)
 - [Writing a runbook](../guides/writing-runbooks.md)
+- [Source code](https://github.com/runbooks-help/runbooks)
