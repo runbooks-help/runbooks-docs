@@ -12,3 +12,7 @@ The content is the `docs/` tree:
 Authoring is plain Markdown with YAML frontmatter. The format is documented in `guides/writing-runbooks.md`; the app reads this tree as a content source with `CONTENT_GIT_PATH=docs`.
 
 This repository holds documentation content only. The application lives at [runbooks-help/runbooks](https://github.com/runbooks-help/runbooks).
+
+## Licence
+
+Source-available under [FSL-1.1-MIT](LICENSE): free to use, modify and share, with no competing-use right, and each release converts to MIT two years after publication.
