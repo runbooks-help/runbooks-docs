@@ -25,12 +25,17 @@ Everything is an environment variable; there is no config file. The defaults are
 | --- | --- | --- |
 | `CONTENT_DIR` | `content` | Directory the runbooks are read from when `CONTENT_SOURCE=local`. The image ships an empty one; mount your own. |
 | `CONTENT_SOURCE` | `local` | `local` (read `CONTENT_DIR`) or `git` (clone the remote into a cache and read it). |
+| `CONTENT_GIT_REPO` | _(unset)_ | Remote URL for the git content source; required when `CONTENT_SOURCE=git`. |
+| `CONTENT_GIT_BRANCH` | `main` | Branch to track. |
+| `CONTENT_GIT_USERNAME` | `oauth2` | HTTPS basic-auth username (token as password). |
+| `CONTENT_GIT_TOKEN` | _(unset)_ | HTTPS access token for a private content repo. |
+| `CONTENT_GIT_SSH_KEY` | _(unset)_ | Private key path for an SSH content remote; omit to use the ambient SSH agent. |
 | `CONTENT_GIT_PATH` | `.` | Directory within the repo to read when `CONTENT_SOURCE=git`. |
 | `CONTENT_GIT_CACHE` | `data/content` | Where the git clone lives; reused across restarts. |
 | `CONTENT_REFRESH_TOKEN` | _(unset)_ | Bearer token for `POST /api/content/v1/refresh` when identity is off; unset disables the endpoint (it is admin-only when identity is on). |
 | `CONTENT_REFRESH_INTERVAL` | _(unset)_ | Opt-in background refresh, e.g. `5m`. Go duration; unset or `0` is off. Values below `1m` are rejected at startup. Applies to any source (`local` re-read, `git` fetch first). |
 
-With `CONTENT_SOURCE=git`, the remote and credential come from the `GITSYNC_*` variables below: content at the repo root, notes records in `GITSYNC_BASE_PATH`, which the content walk skips.
+With `CONTENT_SOURCE=git`, the remote and credential come from the `CONTENT_GIT_*` variables above, independently of notes sync (`GITSYNC_*`). Content is read from `CONTENT_GIT_PATH`; a `GITSYNC_BASE_PATH` directory inside the content tree is skipped by the walk so notes records are never parsed as runbooks. The app refuses to start when `GITSYNC_REPO` equals `CONTENT_GIT_REPO`: the content repo is read-only to it.
 
 ## Identity
 
