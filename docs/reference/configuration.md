@@ -14,7 +14,7 @@ Everything is an environment variable; there is no config file. The defaults are
 | --- | --- | --- |
 | `PORT` | `8090` | HTTP listen port. |
 | `STYLEGUIDE_ENABLED` | `false` | Serve the design-system reference at `/styleguide` and `/styleguide/llms`. |
-| `PUBLIC_URL` | _(unset)_ | Absolute site base, e.g. `https://runbooks.help` (trailing slash stripped). Enables canonical/OpenGraph URLs and `/sitemap.xml`. |
+| `PUBLIC_URL` | _(unset)_ | Absolute site base, e.g. `https://docs.runbooks.help` (trailing slash stripped). Enables canonical/OpenGraph URLs and `/sitemap.xml`. |
 | `SITE_DESCRIPTION` | _(unset)_ | Default `<meta name="description">` for pages without their own. |
 
 `/healthz` is always served, unauthenticated, and returns `200 ok`.

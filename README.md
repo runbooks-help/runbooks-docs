@@ -1,6 +1,6 @@
 # Runbooks docs
 
-The public documentation for [runbooks.help](https://runbooks.help), authored in the Runbooks format and served by the Runbooks app.
+The public documentation for [runbooks.help](https://docs.runbooks.help), authored in the Runbooks format and served by the Runbooks app.
 
 The content is the `docs/` tree:
 
