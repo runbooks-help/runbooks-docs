@@ -164,6 +164,7 @@ One file at the content root, `content/_glossary.yml`, defines the shared terms 
 
 ## Where next
 
+- [Component gallery](component-gallery.md)
 - [Configuration reference](../reference/configuration.md)
 - [Deployment](../operations/deployment.md)
 - [Agent access](../operations/agent-access.md)
