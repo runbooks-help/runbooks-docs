@@ -6,11 +6,11 @@ layout: sections
 description: What Runbooks is, the mental model, and who it is for.
 ---
 
-Runbooks is a small, self-hosted web app that turns a directory of Markdown files into interactive, step-by-step operational runbooks. **Prod broke? Runbooks help.**
+A **runbook** is the step-by-step procedure you follow when something breaks in production. Runbooks is a small, self-hosted web app that turns a directory of Markdown files into interactive versions of them. **Prod broke? Runbooks help.**
 
 ## What it is
 
-- **Files are the content.** A runbook is a Markdown file with YAML frontmatter. The directory path decides the sidebar. There is no database, no CMS and no authoring UI: you edit files in your editor and commit them.
+- **Files are the content.** In Runbooks, a runbook is a Markdown file with YAML frontmatter. The directory path decides the sidebar. There is no database, no CMS and no authoring UI: you edit files in your editor and commit them.
 - **One binary, one container.** The app reads a content directory at runtime, so content changes need no rebuild and no redeploy.
 - **Procedures and documentation in one tool.** A `##` heading renders as a numbered, tickable, collapsible **step** (a procedure) or an unnumbered **section** (reference prose), and one page can mix both.
 - **Built for reading under duress.** Symptom-first titles, collapsible steps, code blocks with a per-block "done" box, decision callouts, a rollback section, inline variables, notes, and a Zen mode that shows one step at a time.
