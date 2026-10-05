@@ -39,7 +39,7 @@ A `##` heading starts a step: a numbered, tickable, collapsible card. Its body c
 
 - The logarithmic casing is **malleable**, which is the entire point of it.
 - The `panametric fan` sits *directly* above the two spurving bearings.
-- The differential girdle spring is tensioned to {{SPURVING_TORQUE}} Nm and left there.
+- The differential girdle spring is tensioned to the torque you entered (the `SPURVING_TORQUE` input) and left there.
 - A bullet may nest another list:
   - The lunar wane shaft is aligned with the main axis.
   - The reciprocating dingle arm is not to be oiled.
@@ -54,7 +54,7 @@ A numbered list works the same way:
 | --- | --- | --- |
 | `amulite drift` | Base plate creep | `< 0.02 mm` |
 | `gyro wobble` | Fan precession | `±3 °` |
-| `girdle tension` | Spring load | `{{SPURVING_TORQUE}} Nm` |
+| `girdle tension` | Spring load | e.g. `42 Nm` |
 
 ### A subheading keeps the step going
 
@@ -62,7 +62,9 @@ A `###` subheading splits a long step without starting a new card, so related re
 
 ## Re-tension the girdle spring
 
-Code blocks take a lower-case language tag and an optional bracketed label. The label is what renders the header with the per-block done checkbox; variables substitute in, and the ones you have filled in are highlighted.
+Code blocks take a lower-case language tag and an optional bracketed label. The label is what renders the header with the per-block done checkbox; the variables you have filled in are highlighted.
+
+Variables substitute **in code blocks only** (and this page keeps its tokens there), so a `{{TOKEN}}` written in ordinary prose or a table cell would be left exactly as typed.
 
 ```bash [Torque the spring]
 RETRO_HOST="{{HOST}}"
