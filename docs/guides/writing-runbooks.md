@@ -120,6 +120,8 @@ Add a language and an optional bracketed label; the label renders a header with 
 SELECT @@read_only, @@global.gtid_executed;
 ```
 
+To show a block that itself contains a fence — a transcript, a diff — open the outer block with more backticks than the inner one (four around a three-backtick example). A three-backtick outer fence would end at the first inner line and silently swallow the rest of the page.
+
 ## Notices
 
 ```markdown
