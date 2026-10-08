@@ -3,16 +3,16 @@ title: Reviewing a runbook
 slug: reviewing-runbooks
 order: 2
 layout: sections
-description: Close the loop — turn the notes captured during an incident into a classified review, then a revision.
+description: Close the loop — turn the notes you capture during an incident into a classified review, then a revision.
 ---
 
-A runbook is wrong the first time you write it. The fix is a loop: capture what happened, review it against the page, revise. This page walks one real run through the whole loop.
+A runbook is wrong the first time you write it. The fix is a loop: capture what happened, review it against the page, and revise. This page follows one real run through the loop.
 
 The example is `replication-lag` from the gallery: a procedure for an MTS deadlock, three runs, and the review that came out of them.
 
-## Capture: what the reader leaves behind
+## Capture: what you leave behind
 
-The reader leaves notes during the run. The notes panel records them against the page, and each run syncs an immutable snapshot (`runbook.md`, `notes.md`, images). Ask for what matters: what helped, what wasted time, and what looked like the answer but wasn't.
+You leave notes during the run. The notes panel records them against the page, and each run syncs an immutable snapshot (`runbook.md`, `notes.md`, images). Ask for what matters: what helped, what wasted time, and what looked like the answer but wasn't.
 
 Three snapshots came back from this runbook:
 
@@ -47,11 +47,11 @@ Every note lands in exactly one class, and the class decides its route:
 
 | Class | Route |
 |---|---|
-| **Runbook fix** | A before → after edit anchored to a step. |
-| **Lookalike** | A `> [!lookalike]` block: what else it looks like, and how to rule it out. |
-| **Environment fact** | True for your deployment, not the shared page — proposed as a `var` or hint, always labelled. |
-| **Out of scope** | Not the runbook's job — named and routed out, never absorbed into the page. |
-| **No action** | Worked as written. No edit. |
+| **Runbook fix** | Edit a step: before → after. |
+| **Lookalike** | Add a `> [!lookalike]` block: what else the symptom looks like, and how to rule it out. |
+| **Environment fact** | Propose a `var` or hint and mark it a generalisation. The fact is true for your deployment, not the shared page. |
+| **Out of scope** | Name it and route it out. Never absorb it into the page. |
+| **No action** | Record it. No edit. |
 
 The reviewer proposes; you decide. It never rewrites the page on its own, and it can propose nothing at all. Against these three runs it produced:
 
@@ -115,7 +115,7 @@ of every operator?
 
 ## Revision: apply what you accept
 
-You apply the edits in git. For this page that meant naming the worker to kill, adding the lookalike, and leaving the rota complaint and the bastion note alone — one is not the runbook's job, the other is local to a deployment and the reviewer flagged it as a generalisation, not a shared fact.
+You apply the edits in git. Here that meant naming the worker to kill and adding the lookalike. Two notes stayed out: the rota complaint is not the runbook's job, and the bastion note is local to a deployment — the reviewer flagged it as a generalisation, not a shared fact.
 
 ````diff [The revision — content/playground/replication-lag.md]
  ### Free the blocked worker
@@ -136,15 +136,15 @@ You apply the edits in git. For this page that meant naming the worker to kill, 
 +> `Retrieved_Gtid_Set` ahead of `Executed_Gtid_Set`.
 ````
 
-The lookalike is content, not a step and not a warning. Pasted into the page, it renders as its own block:
+The lookalike renders as its own block, subordinate to the step it belongs to:
 
 > [!lookalike] GTID gap on the replica
 > Looks like: the MTS deadlock — replica up, IO healthy, lag climbing.
 > Rule out by: no `waiting for handler commit` in `SHOW ENGINE INNODB STATUS`, and `Retrieved_Gtid_Set` ahead of `Executed_Gtid_Set`.
 
-## Now it is less wrong
+## Now the page is less wrong
 
-The next responder rules the GTID gap out with one query, and kills the right worker instead of guessing between two. That is the loop closing: execution is the source of truth, and every run makes the page a little righter.
+The next responder rules out the GTID gap with one query and kills the right worker instead of guessing between two. That is the loop closing: execution is the source of truth, and every run makes the page a little righter.
 
 ## Where next
 
