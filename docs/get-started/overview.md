@@ -41,6 +41,7 @@ Runbooks is **source-available** under FSL-1.1-MIT: free to self-host, modify an
 
 ## Where next
 
+- [Why runbooks get less wrong](why.md)
 - [Install & quickstart](install.md)
 - [Writing a runbook](../guides/writing-runbooks.md)
 - [Source code](https://github.com/runbooks-help/runbooks)
