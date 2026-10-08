@@ -34,7 +34,7 @@ Authorization: Bearer rbk_…
 
 ## Creating an API key
 
-Keys are minted from your own account page and are read-only by construction.
+Mint keys from your own account page; they are read-only by construction.
 
 <!-- steps -->
 
@@ -44,7 +44,7 @@ On an identity-enabled instance, open `/account` → **API keys**, give the key 
 
 ## Copy it once
 
-The raw key (`rbk_…`) is shown **once**: copy it then; only its SHA-256 hash is stored and it cannot be recovered. Revoke a key from the same table.
+The app shows the raw key (`rbk_…`) **once**: copy it then; it stores only the SHA-256 hash, so you cannot recover it. Revoke a key from the same table.
 
 <!-- sections -->
 

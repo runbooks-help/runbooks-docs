@@ -36,11 +36,11 @@ Display names and order live in `content/_meta.yml` at the top of the tree: an o
 - backend
 ```
 
-An item is a bare directory name or `name: {title, categories}`; a category may carry a title the same way. Unlisted directories are appended after the listed ones, alphabetically. Within a category, runbooks sort by the optional frontmatter `order:` (lower first; absent sorts last), then by title. Use `order:` to pull the most likely on-call runbook to the top of its category.
+An item is a bare directory name or `name: {title, categories}`; a category may carry a title the same way. Unlisted directories come after the listed ones, alphabetically. Within a category, runbooks sort by the optional frontmatter `order:` (lower first; absent sorts last), then by title. Use `order:` to pull the most likely on-call runbook to the top of its category.
 
 ## Frontmatter
 
-Only `title` and `slug` are required; everything else is optional.
+Runbooks requires only `title` and `slug`; everything else is optional.
 
 ```yaml
 ---
@@ -126,7 +126,7 @@ SELECT @@read_only, @@global.gtid_executed;
 > [!info] Informational note. [!warn] Something to be careful about. [!danger] This causes an outage.
 ```
 
-The GitHub alert keywords (`NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`) are accepted and mapped onto info/warn/danger, and the marker is case-insensitive.
+Runbooks accepts the GitHub alert keywords (`NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`) and maps them onto info/warn/danger; the marker is case-insensitive.
 
 ## Decision points
 
@@ -154,7 +154,7 @@ One file at the content root, `content/_glossary.yml`, defines the shared terms 
   link: https://internal/glossary#mts
 ```
 
-`term` and `expansion` are required; a missing one fails startup. Matching is exact, case-sensitive and whole-word, so `IT` never matches "it".
+Runbooks requires `term` and `expansion`; a missing one fails startup. Matching is exact, case-sensitive and whole-word, so `IT` never matches "it".
 
 ## Conventions
 

@@ -8,7 +8,7 @@ description: Run the container, mount your runbooks, and see your first page.
 
 ## Run the container
 
-The app ships as a container image and carries no content. You mount a directory of Markdown runbooks. The image is built from the public source at [github.com/runbooks-help/runbooks](https://github.com/runbooks-help/runbooks).
+The app ships as a container image and carries no content. You mount a directory of Markdown runbooks:
 
 ```bash [Start Runbooks]
 docker run -d --name runbooks \
@@ -42,7 +42,7 @@ description: Check that last night's dump exists and restores.
 The dump should be from tonight and non-trivial in size.
 ```
 
-The path puts it under **MySQL › Backup** in the sidebar, and the URL is `/verify-backup` (from the slug, not the filename). Content is read from disk at startup: no rebuild, no restart. Add a code block, a notice or `vars` as you need them: see [Writing a runbook](../guides/writing-runbooks.md).
+The path puts it under **MySQL › Backup** in the sidebar, and the URL is `/verify-backup` (from the slug, not the filename). Runbooks reads content from disk at startup: no rebuild, no restart. Add a code block, a notice or `vars` as you need them: see [Writing a runbook](../guides/writing-runbooks.md).
 
 ## Configuration
 

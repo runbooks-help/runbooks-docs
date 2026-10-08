@@ -62,9 +62,9 @@ A `###` subheading splits a long step without starting a new card, so related re
 
 ## Re-tension the girdle spring
 
-Code blocks take a lower-case language tag and an optional bracketed label. The label is what renders the header with the per-block done checkbox; the variables you have filled in are highlighted.
+Code blocks take a lower-case language tag and an optional bracketed label. The label is what renders the header with the per-block done checkbox; Runbooks highlights the variables you have filled in.
 
-Variables substitute **in code blocks only** (and this page keeps its tokens there), so a `{{TOKEN}}` written in ordinary prose or a table cell would be left exactly as typed.
+Variables substitute **in code blocks only** (and this page keeps its tokens there), so Runbooks leaves a `{{TOKEN}}` in ordinary prose or a table cell exactly as you typed it.
 
 ```bash [Torque the spring]
 RETRO_HOST="{{HOST}}"

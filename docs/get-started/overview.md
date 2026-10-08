@@ -12,7 +12,7 @@ A **runbook** is the step-by-step procedure you follow when something breaks in 
 
 - **Files are the content.** In Runbooks, a runbook is a Markdown file with YAML frontmatter. The directory path decides the sidebar. There is no database, no CMS and no authoring UI: you edit files in your editor and commit them.
 - **One binary, one container.** The app reads a content directory at runtime, so content changes need no rebuild and no redeploy.
-- **Procedures and documentation in one tool.** A `##` heading renders as a numbered, tickable, collapsible **step** (a procedure) or an unnumbered **section** (reference prose), and one page can mix both.
+- **Procedures and documentation in one tool.** Runbooks renders a `##` heading as a numbered, tickable, collapsible **step** (a procedure) or an unnumbered **section** (reference prose); one page can mix both.
 - **Built for reading under duress.** Symptom-first titles, collapsible steps, code blocks with a per-block "done" box, decision callouts, a rollback section, inline variables, notes, and a Zen mode that shows one step at a time.
 
 ## The mental model
@@ -29,7 +29,7 @@ A **runbook** is the step-by-step procedure you follow when something breaks in 
 
 ## Identity is optional
 
-By default the app is public: no accounts, no database. Turn on passkey (WebAuthn) identity, or delegate to an upstream proxy/SSO gateway, to gate reads and attribute writes to named users. It is off until you configure it, and when it is on the instance is private (crawlers are disallowed).
+By default the app is public: no accounts, no database. Turn on passkey (WebAuthn) identity, or delegate to an upstream proxy/SSO gateway, to gate reads and attribute writes to named users. Identity stays off until you configure it. Turn it on and the instance goes private: it blocks crawlers.
 
 ## Who it is for
 

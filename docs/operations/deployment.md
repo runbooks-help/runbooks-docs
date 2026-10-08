@@ -8,22 +8,22 @@ description: Storage, backups, content sources and upgrading a deployment.
 
 ## Storage
 
-- **Runbooks** are plain markdown read from a content **source** at runtime; not stored in a database, and not part of a backup of it. By default that is a local directory (`CONTENT_DIR`, default `content`); set `CONTENT_SOURCE=git` to read from a repository instead, cloned into `CONTENT_GIT_CACHE` (records under `GITSYNC_BASE_PATH` are skipped). The image ships an empty directory (it never bundles content); mount yours there, or point the source wherever you like.
+- **Runbooks** are plain markdown that Runbooks reads from a content **source** at runtime; it stores nothing in a database, so a database backup never includes them. By default that is a local directory (`CONTENT_DIR`, default `content`); set `CONTENT_SOURCE=git` to read from a repository instead, cloned into `CONTENT_GIT_CACHE` (records under `GITSYNC_BASE_PATH` are skipped). The image ships an empty directory (it never bundles content); mount yours there, or point the source wherever you like.
 - **Identity** (users, passkeys, sessions, invites, audit events) lives in the configured database. SQLite is the default and keeps everything in one file at `file:./data/runbooks.db`.
 - In the container the working directory is `/app`, so the SQLite file is `/app/data/runbooks.db`. Mount a volume at `/app/data` to persist it.
-- The schema is applied at startup from embedded, idempotent migrations. There is no external migration tool and no migration step: **to upgrade, replace the binary or image and restart.**
+- Runbooks applies the schema at startup from embedded, idempotent migrations. There is no external migration tool and no migration step: **to upgrade, replace the binary or image and restart.**
 - `IDENTITY_PUBLIC_URL` is effectively immutable once passkeys exist: changing the host invalidates every credential.
 
 ## Content
 
-Runbooks are read from a **source**, selected by `CONTENT_SOURCE`:
+Runbooks reads content from a **source**, selected by `CONTENT_SOURCE`:
 
 - `local` (default): read `CONTENT_DIR` directly. Mount your content there.
 - `git`: clone `CONTENT_GIT_REPO` (branch `CONTENT_GIT_BRANCH`) into `CONTENT_GIT_CACHE` and read `CONTENT_GIT_PATH` inside it. Content sits at the repo root; a `GITSYNC_BASE_PATH` directory in the tree is skipped by the content walk.
 
 ### SSH credentials
 
-SSH remotes authenticate with the **ambient SSH agent** by default: with no `CONTENT_GIT_SSH_KEY` and no `CONTENT_GIT_TOKEN`, `go-git` connects through `$SSH_AUTH_SOCK`, so a running `ssh-agent`, 1Password, or equivalent is enough on a workstation; there is nothing to configure. Host keys are verified against `SSH_KNOWN_HOSTS`, then `~/.ssh/known_hosts` / `/etc/ssh/ssh_known_hosts`; there is no `accept-new`, so the host must already be known.
+SSH remotes authenticate with the **ambient SSH agent** by default: with no `CONTENT_GIT_SSH_KEY` and no `CONTENT_GIT_TOKEN`, `go-git` connects through `$SSH_AUTH_SOCK`, so a running `ssh-agent`, 1Password, or equivalent is enough on a workstation; there is nothing to configure. Runbooks verifies host keys against `SSH_KNOWN_HOSTS`, then `~/.ssh/known_hosts` / `/etc/ssh/ssh_known_hosts`; it has no `accept-new`, so the host must already be known.
 
 A **deployment or CI job has no agent**, so supply the key explicitly. Mount the private key and a `known_hosts` file read-only, then point the variables at them:
 
@@ -37,11 +37,11 @@ docker run -d \
   ghcr.io/runbooks-help/runbooks:<tag>
 ```
 
-The key is read as a file path, not a value, so an orchestrator secret mounted as a file works directly. HTTPS remotes need `CONTENT_GIT_TOKEN` instead and no agent.
+Runbooks reads the key as a file path, not a value, so an orchestrator secret mounted as a file works directly. HTTPS remotes need `CONTENT_GIT_TOKEN` instead and no agent.
 
 ### Startup order
 
-- **Cache present:** the cached checkout is parsed and served immediately, then the remote is fetched in the background. An unreachable remote does not delay or fail boot; the last successful fetch keeps serving.
+- **Cache present:** Runbooks parses and serves the cached checkout immediately, then fetches the remote in the background. An unreachable remote does not delay or fail boot; the last successful fetch keeps serving.
 - **No cache:** the clone happens before the server listens. Boot fails only when there is neither a cache nor a successful fetch.
 
 A failed fetch or a parse error keeps the current in-memory snapshot (last-good); it never serves a half-loaded set.
@@ -53,9 +53,9 @@ A failed fetch or a parse error keeps the current in-memory snapshot (last-good)
 - With identity on it is **admin-only**: a signed-in admin; an API key is read-only by construction and cannot call it.
 - With identity off it requires `Authorization: Bearer $CONTENT_REFRESH_TOKEN`, and is disabled (`403`) when no token is configured.
 
-A local source is re-read in place; only a git source fetches.
+Runbooks re-reads a local source in place; only a git source fetches.
 
-Set `CONTENT_REFRESH_INTERVAL` (e.g. `5m`) to refresh on a timer instead of relying on an external scheduler. It is opt-in and requires at least `1m`; each wait is jittered ±10% so several instances polling one repo do not beat in lockstep. Refreshes are serialized (a tick that lands while a refresh is already running is skipped, and the manual endpoint waits its turn), and a failed refresh only logs and keeps the last-good snapshot. There is no webhook.
+Set `CONTENT_REFRESH_INTERVAL` (e.g. `5m`) to refresh on a timer instead of relying on an external scheduler. It is opt-in and requires at least `1m`; each wait is jittered ±10% so several instances polling one repo do not beat in lockstep. Runbooks serializes refreshes (it skips a tick that lands while one is already running, and the manual endpoint waits its turn), and a failed refresh only logs and keeps the last-good snapshot. There is no webhook.
 
 ### Cache
 
@@ -63,7 +63,7 @@ Set `CONTENT_REFRESH_INTERVAL` (e.g. `5m`) to refresh on a timer instead of rely
 
 ## Backing up SQLite
 
-Identity lives in the configured database (SQLite by default) and can be backed up while the app runs.
+Identity lives in the configured database (SQLite by default); you can back it up while the app runs.
 
 <!-- steps -->
 

@@ -6,9 +6,9 @@ layout: sections
 description: Passkey sign-in, proxy delegation, and gating reads on named users.
 ---
 
-Runbooks can require named users, so that reads are gated and writes are attributed to a person. It is **off by default**: with no identity database configured the app is public and the sync API is gated by `GITSYNC_API_TOKEN`.
+Runbooks can require named users, so that reads are gated and writes are attributed to a person. It is **off by default**: with no identity database configured the app is public and `GITSYNC_API_TOKEN` gates the sync API.
 
-Sign-in is by **passkey** (WebAuthn): no password, no shared secret, no email. Registration is invite-only, and the first admin is created with a bootstrap token.
+Sign-in is by **passkey** (WebAuthn): no password, no shared secret, no email. Registration is invite-only, and you create the first admin with a bootstrap token.
 
 ## Enabling
 
@@ -28,7 +28,7 @@ Open `/setup` and present the bootstrap token to enrol the first admin; from the
 
 ## Delegating to an upstream proxy
 
-Instead of passkeys, the app can trust an identity asserted by a reverse proxy or SSO gateway in front of it:
+Instead of passkeys, the app can trust an identity that a reverse proxy or SSO gateway asserts in front of it:
 
 | Var                          | Meaning                            | Default              |
 | ---------------------------- | ---------------------------------- | -------------------- |
@@ -36,7 +36,7 @@ Instead of passkeys, the app can trust an identity asserted by a reverse proxy o
 | `IDENTITY_PROXY_USER_HEADER` | Header carrying the login/email    | `Auth-Request-Email` |
 | `IDENTITY_PROXY_NAME_HEADER` | Header carrying the display name   | _(unset)_            |
 
-On first sight the asserted identity is provisioned as a `member`; admin is never granted from a header. A request is resolved from the session cookie first, then the header, so a proxied request is authenticated without a login.
+On first sight Runbooks provisions the asserted identity as a `member`; it never grants admin from a header. Runbooks resolves a request from the session cookie first, then the header, so a proxied request authenticates without a login.
 
 > [!WARNING] Only enable this when the instance is **unreachable except through the proxy**, which must set and strip the header. A directly reachable instance is an impersonation hole: anyone who can reach it can set the header themselves.
 
@@ -62,4 +62,4 @@ with the app listening on loopback and `tailscale serve` in front of it. Caveats
 
 ## Attribution
 
-With identity on, `/api/git-sync/v1` requires an authenticated session (or proxy assertion), and the commit author is the signed-in user: name and email from the user record. `GITSYNC_API_TOKEN` remains the non-human automation fallback for CI and scripts. Runbook acknowledgements are recorded against the authenticated user.
+With identity on, `/api/git-sync/v1` requires an authenticated session (or proxy assertion), and the commit author is the signed-in user: name and email from the user record. `GITSYNC_API_TOKEN` remains the non-human automation fallback for CI and scripts. Runbooks records acknowledgements against the authenticated user.
