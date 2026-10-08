@@ -1,7 +1,7 @@
 ---
 title: Install & quickstart
 slug: install
-order: 2
+order: 3
 layout: sections
 description: Run the container, mount your runbooks, and see your first page.
 ---
