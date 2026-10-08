@@ -5,7 +5,7 @@ The public documentation for [runbooks.help](https://docs.runbooks.help), author
 The content is the `docs/` tree:
 
 - `get-started/`: what Runbooks is, and the install/quickstart
-- `guides/`: writing a runbook
+- `guides/`: writing and reviewing runbooks
 - `reference/`: configuration
 - `operations/`: deployment, identity, agent access
 

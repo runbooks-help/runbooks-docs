@@ -42,3 +42,4 @@ We can't force you to write a good runbook, and we don't try. We give you the to
 
 - [Install & quickstart](install.md)
 - [Writing a runbook](../guides/writing-runbooks.md)
+- [Reviewing a runbook](../guides/reviewing-runbooks.md)
