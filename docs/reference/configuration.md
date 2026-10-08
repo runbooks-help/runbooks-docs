@@ -57,15 +57,19 @@ Identity stays **off** until you set `IDENTITY_DB_DRIVER`; with no driver the ap
 
 Runbooks ignores `IDENTITY_BOOTSTRAP_TOKEN` once an admin exists. There is no API to rotate the bootstrap or recovery tokens: change the value and restart.
 
-## Git sync
+## Records
 
-Sync runs only when you configure a repo **and** a credential **and** an endpoint auth. The endpoint auth is a user session when identity is on (it refuses an unauthenticated request), or `GITSYNC_API_TOKEN` when identity is off.
+Runbooks captures each run as an immutable snapshot: the notes you left and the runbook as executed. Runbooks serves the snapshot back read-only at `GET /api/runbooks/v1/notes?slug=<slug>`, plus a record's other files (images, …) at `/api/runbooks/v1/notes/<slug>/<taken_at>/<file>`. By default runs go to a **local folder**, so the loop needs no second repository; set `GITSYNC_REPO` to send them to a git repo instead. Runbooks reads a folder in place and clones a repo into `GITSYNC_CACHE`.
 
-A credential is an HTTPS token (`GITSYNC_TOKEN`), an explicit SSH private key (`GITSYNC_SSH_KEY`), or, for an `ssh://` or scp-style remote, the ambient SSH agent. With no key and no token, `go-git` authenticates SSH remotes through `$SSH_AUTH_SOCK` (ssh-agent, 1Password, …), so the common local setup needs no credential variable at all. Set `GITSYNC_SSH_KEY` only where there is no agent: a deployment or CI job that mounts a key and points the variable at its path. See [docs/operations/deployment.md](../operations/deployment.md#ssh-credentials) for the container recipe.
+Only an authenticated writer captures a run: a user session when identity is on (an unauthenticated request is refused), or `GITSYNC_API_TOKEN` when identity is off. With neither, the write endpoint stays off and no run is recorded.
+
+A configured repo needs a **credential**: an HTTPS token (`GITSYNC_TOKEN`), an explicit SSH private key (`GITSYNC_SSH_KEY`), or, for an `ssh://` or scp-style remote, the ambient SSH agent. With no key and no token, `go-git` authenticates SSH remotes through `$SSH_AUTH_SOCK` (ssh-agent, 1Password, …), so the common local setup needs no credential variable at all. Set `GITSYNC_SSH_KEY` only where there is no agent: a deployment or CI job that mounts a key and points the variable at its path. See [docs/operations/deployment.md](../operations/deployment.md#ssh-credentials) for the container recipe.
 
 | Var | Default | Meaning |
 | --- | --- | --- |
-| `GITSYNC_REPO` | _(unset)_ | Remote URL: any host, HTTPS or SSH. Unset disables sync. |
+| `GITSYNC_DIR` | `data/runs` | Records folder, used when `GITSYNC_REPO` is unset. Snapshots land in `<GITSYNC_DIR>/<YYYY-MM-DD>T<HHMMSSZ>-<slug>/`. |
+| `GITSYNC_CACHE` | `data/records` | Where the records repo is cloned for reading; reused across restarts. |
+| `GITSYNC_REPO` | _(unset)_ | Remote URL: any host, HTTPS or SSH. Unset writes to `GITSYNC_DIR` instead. |
 | `GITSYNC_BRANCH` | `main` | Target branch. |
 | `GITSYNC_BASE_PATH` | `runbook_runs` | Directory prefix for records (skipped by the content walk when it sits inside the content tree). |
 | `GITSYNC_AUTHOR_NAME` | _(required)_ | Fallback commit identity, when the user has no email. |
@@ -75,8 +79,8 @@ A credential is an HTTPS token (`GITSYNC_TOKEN`), an explicit SSH private key (`
 | `GITSYNC_SSH_KEY` | _(unset)_ | Private key path for SSH remotes; omit to use the ambient SSH agent. |
 | `GITSYNC_API_TOKEN` | _(unset)_ | Shared bearer that gates the sync endpoint, for CI/automation and for identity-off deployments. |
 
-Each sync writes a new, immutable snapshot directory under the base path, `<GITSYNC_BASE_PATH>/<YYYY-MM-DD>T<HHMMSSZ>-<slug>/` (UTC), so every sync is preserved; a re-sync with no changes is skipped.
+Each sync writes a new, immutable snapshot directory, `<YYYY-MM-DD>T<HHMMSSZ>-<slug>/` (UTC), under `GITSYNC_BASE_PATH` in a repo or directly under `GITSYNC_DIR` in a folder. Every sync is preserved; a re-sync with no changes is skipped. In the container the working directory is `/app`, so both defaults sit under `/app/data`, the volume you mount to persist data.
 
-With identity on, Runbooks authors a signed-in user's commit as that user (`DisplayName <Email>`); `GITSYNC_AUTHOR_*` applies only when the user has no email, and `GITSYNC_API_TOKEN` is the non-human fallback.
+With a repo and identity on, Runbooks authors a signed-in user's commit as that user (`DisplayName <Email>`); `GITSYNC_AUTHOR_*` applies only when the user has no email, and `GITSYNC_API_TOKEN` is the non-human fallback.
 
 The git transport is `go-git` (pure Go); you need no system `git` binary. Runbooks verifies host keys against `known_hosts` (`SSH_KNOWN_HOSTS`, then `~/.ssh/known_hosts` / `/etc/ssh/ssh_known_hosts`); it has no `accept-new`, so the host key must already be present.
